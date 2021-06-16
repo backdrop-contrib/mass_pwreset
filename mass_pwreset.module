@@ -20,7 +20,7 @@ function mass_pwreset_help($path, $arg) {
  */
 function mass_pwreset_menu() {
   $items['admin/people/mass-pwreset'] = array(
-    'title' => 'Mass Password Reset',
+    'title' => 'Mass password reset',
     'description' => 'Perform mass password reset functions.',
     'page callback' => 'backdrop_get_form',
     'page arguments' => array('mass_pwreset_form'),

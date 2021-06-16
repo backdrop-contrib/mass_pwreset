@@ -1,4 +1,4 @@
-name = Mass Password Reset
+name = Mass password reset
 description = Mass reset of user account passwords (by role)
 backdrop = 1.x
 type = module

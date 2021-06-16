@@ -14,7 +14,7 @@
 function mass_pwreset_form($form, $form_state) {
   $form['options'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Password Reset Options'),
+    '#title' => t('Password reset options'),
   );
   $form['options']['notify_users'] = array(
     '#type' => 'checkbox',
