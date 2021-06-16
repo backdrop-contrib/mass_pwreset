@@ -27,7 +27,7 @@ function mass_pwreset_batch_process($data, &$context) {
       mass_pwreset_execute_reset($account);
       $context['results'][] = t('Reset account %name', array('%name' => $account->name));
 
-      if ($data['notify_users'] == '1') {
+      if ($data['notify_users'] == '1' && $account->status) {
         mass_pwreset_notify($account);
         $context['results'][] = t('The e-mail has been sent to %mail', array('%mail' => $account->mail));
       }
