@@ -6,16 +6,6 @@
  */
 
 /**
- * Implements hook_help().
- */
-function mass_pwreset_help($path, $arg) {
-  switch ($path) {
-    case 'admin/people/mass-pwreset':
-      return '<p><strong>' . t('Use this form with caution.') . '</strong></p>' . '<p>' . t('This form will reset the passwords of all users except the administrative superuser id 1. You can optionally reset the administrative superuser id 1. Once passwords have been reset, users will optionally receive emails using the Backdrop password recovery email. The password recovery email content can be edited at the <a href="@url">account settings configuration page</a>.', array('@url' => url("admin/config/people/accounts"))) . '</p>';
-  }
-}
-
-/**
  * Implements hook_menu().
  */
 function mass_pwreset_menu() {
