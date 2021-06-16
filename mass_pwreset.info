@@ -1,5 +1,5 @@
 name = Mass Password Reset
-description = Reset all user accounts!
+description = Mass reset of user account passwords (by role)
 backdrop = 1.x
 type = module
 

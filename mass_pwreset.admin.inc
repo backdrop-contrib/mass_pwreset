@@ -14,27 +14,28 @@
 function mass_pwreset_form($form, $form_state) {
   $form['options'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Options'),
-  );
-  $form['options']['choose_roles'] = array(
-    '#type' => 'checkboxes',
-    '#title' => t('Choose for what role'),
-    '#options' => user_roles(TRUE),
-    '#required' => TRUE,
+    '#title' => t('Password Reset Options'),
   );
   $form['options']['notify_users'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Notify users of password reset via email'),
-    '#description' => t("Notify users of password reset with Backdrop's password recovery email."),
+    '#title' => t('Notify users via email'),
+    '#description' => t("Send Backdrop's password recovery email to users when their password is reset."),
     '#default_value' => 0,
   );
   $form['options']['include_admin_user'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Include admin user (uid1)'),
-    '#description' => t('Include the administrative superuser id 1 account in the list of passwords being reset.'),
+    '#title' => t('Include admin user'),
+    '#description' => t('Include the administrative superuser account (user id = 1) in the list of passwords being reset.'),
     '#default_value' => 0,
   );
-  $form['reset_passwords'] = array(
+  $form['options']['choose_roles'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Reset passwords for role(s)'),
+    '#options' => user_roles(TRUE),
+    '#required' => TRUE,
+  );
+  $form['actions']['#type'] = 'actions';
+  $form['actions']['reset_passwords'] = array(
     '#type' => 'submit',
     '#value' => t('Reset passwords'),
     '#submit' => array('mass_pwreset_submit'),

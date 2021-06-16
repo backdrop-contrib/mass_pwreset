@@ -143,9 +143,9 @@ function mass_pwreset_multiple_reset($data) {
  * Handler: retrieve uids from a list of roles
  */
 function mass_pwreset_get_uids_by_role($roles = array()) {
-  $rid = BACKDROP_AUTHENTICATED_RID;
+  $role = BACKDROP_AUTHENTICATED_ROLE;
   // If "authenticated user" role is present, select all users.
-  if (in_array($rid, $roles)) {
+  if (in_array($role, $roles)) {
     $query = db_select('users', 'u');
     $query->fields('u', array('uid', 'uid'));
     $query->condition('u.uid', '0', '<>');
@@ -155,7 +155,7 @@ function mass_pwreset_get_uids_by_role($roles = array()) {
     $query = db_select('users', 'u');
     $query->innerJoin('users_roles', 'ur', 'u.uid = ur.uid');
     $query->fields('u', array('uid', 'uid'));
-    $query->condition('ur.rid', $roles, 'IN');
+    $query->condition('ur.role', $roles, 'IN');
     $query->orderBy('u.uid');
   }
 
