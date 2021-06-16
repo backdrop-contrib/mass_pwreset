@@ -16,7 +16,8 @@ be edited at the account settings configuration page.
 
  - Install this module using the official
   [Backdrop CMS instructions](https://backdropcms.org/guide/modules)
- - Mass Password Reset form is located at **admin/people/mass-pwreset**
+ - Mass Password Reset form is located at **User accounts > Mass password
+   reset** (_admin/people/mass-pwreset_)
  - Select options as necessary
  - Click "Reset passwords" button
 
