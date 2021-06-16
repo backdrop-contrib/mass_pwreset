@@ -11,7 +11,7 @@
 function mass_pwreset_help($path, $arg) {
   switch ($path) {
     case 'admin/people/mass-pwreset':
-      return '<p><strong>' . t('Use this form with caution.') . '</strong></p>' . '<p>' . t('This form will reset the passwords of all users except the administrative superuser id 1. You can optionally reset the administrative superuser id 1. Once passwords have been reset, users will optionally receive emails using the Drupal password recovery email. The password recovery email content can be edited at the <a href="@url">account settings configuration page</a>.', array('@url' => url("admin/config/people/accounts"))) . '</p>';
+      return '<p><strong>' . t('Use this form with caution.') . '</strong></p>' . '<p>' . t('This form will reset the passwords of all users except the administrative superuser id 1. You can optionally reset the administrative superuser id 1. Once passwords have been reset, users will optionally receive emails using the Backdrop password recovery email. The password recovery email content can be edited at the <a href="@url">account settings configuration page</a>.', array('@url' => url("admin/config/people/accounts"))) . '</p>';
   }
 }
 
@@ -22,7 +22,7 @@ function mass_pwreset_menu() {
   $items['admin/people/mass-pwreset'] = array(
     'title' => 'Mass Password Reset',
     'description' => 'Perform mass password reset functions.',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('mass_pwreset_form'),
     'access arguments' => array('administer users'),
     'type' => MENU_LOCAL_TASK,
@@ -36,7 +36,7 @@ function mass_pwreset_menu() {
 /**
  * Generate user passwords.
  *
- * Modified version of Drupal's user_password() for generating passwords which
+ * Modified version of Backdrop's user_password() for generating passwords which
  * will never be sent to anyone. The default length of the password has been
  * changed to 12 characters to increse entropy. Includes two sets of password
  * requirements (standard and admin).
@@ -94,7 +94,7 @@ function _mass_pwreset_generate_password($length = 8, $admin = FALSE) {
   $allowable_characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789()`~!@#$%^&*-+=|\{}[]:;"\'<>,.?/';
 
   // Zero-based count of characters in the allowable list.
-  $len = drupal_strlen($allowable_characters) - 1;
+  $len = backdrop_strlen($allowable_characters) - 1;
 
   // Declare the password as a blank string.
   $pass = '';
@@ -107,7 +107,7 @@ function _mass_pwreset_generate_password($length = 8, $admin = FALSE) {
     for ($i = 0; $i < $length; $i++) {
       do {
         // Find a secure random number within the range needed.
-        $index = ord(drupal_random_bytes(1));
+        $index = ord(backdrop_random_bytes(1));
       } while ($index > $len);
 
       // Each iteration, pick a random character from the
@@ -124,42 +124,42 @@ function _mass_pwreset_generate_password($length = 8, $admin = FALSE) {
  * Batch function: Multiple reset
  */
 function mass_pwreset_multiple_reset($data) {
-	$batch = array(
-		'operations' => array(
-						array('mass_pwreset_batch_process', array($data)),
-		),
-		'finished' => 'mass_pwreset_batch_finished',
-		'title' => t('Multiple password reset'),
-		'init_message' => t('Multiple password reset in progress.'),
-		'progress_message' => t('Executed @current of @total.'),
-		'error_message' => t('The Multiple password reset have encountered an error'),
-		'file' => drupal_get_path('module', 'mass_pwreset') . '/mass_pwreset.batch.inc',
-	);
+  $batch = array(
+    'operations' => array(
+      array('mass_pwreset_batch_process', array($data)),
+    ),
+    'finished' => 'mass_pwreset_batch_finished',
+    'title' => t('Multiple password reset'),
+    'init_message' => t('Multiple password reset in progress.'),
+    'progress_message' => t('Executed @current of @total.'),
+    'error_message' => t('The Multiple password reset have encountered an error'),
+    'file' => backdrop_get_path('module', 'mass_pwreset') . '/mass_pwreset.batch.inc',
+  );
 
-	batch_set($batch);
+  batch_set($batch);
 }
 
 /**
  * Handler: retrieve uids from a list of roles
  */
 function mass_pwreset_get_uids_by_role($roles = array()) {
-	$rid = DRUPAL_AUTHENTICATED_RID;
-	// If "authenticated user" role is present, select all users.
-	if (in_array($rid, $roles)) {
-		$query = db_select('users', 'u');
-		$query->fields('u', array('uid', 'uid'));
-		$query->condition('u.uid', '0', '<>');
-		$query->orderBy('u.uid');
-	}
-	else {
-		$query = db_select('users', 'u');
-		$query->innerJoin('users_roles', 'ur', 'u.uid = ur.uid');
-		$query->fields('u', array('uid', 'uid'));
-		$query->condition('ur.rid', $roles, 'IN');
-		$query->orderBy('u.uid');
-	}
+  $rid = BACKDROP_AUTHENTICATED_RID;
+  // If "authenticated user" role is present, select all users.
+  if (in_array($rid, $roles)) {
+    $query = db_select('users', 'u');
+    $query->fields('u', array('uid', 'uid'));
+    $query->condition('u.uid', '0', '<>');
+    $query->orderBy('u.uid');
+  }
+  else {
+    $query = db_select('users', 'u');
+    $query->innerJoin('users_roles', 'ur', 'u.uid = ur.uid');
+    $query->fields('u', array('uid', 'uid'));
+    $query->condition('ur.rid', $roles, 'IN');
+    $query->orderBy('u.uid');
+  }
 
-	$result = $query->execute()->fetchAllKeyed();
-	return $result;
+  $result = $query->execute()->fetchAllKeyed();
+  return $result;
 }
 
