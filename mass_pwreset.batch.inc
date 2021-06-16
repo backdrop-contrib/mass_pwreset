@@ -52,7 +52,7 @@ function mass_pwreset_batch_finished($success, $results, $operations) {
 function mass_pwreset_execute_reset($user) {
   $new_pass = _mass_pwreset_generate_password(12, TRUE);
   user_save($user, array('pass' => $new_pass));
-  backdrop_set_message(t('Users passwords reset.'), 'status');
+  backdrop_set_message(t('Users passwords reset.'), 'status', FALSE);
 }
 
 /**
@@ -60,6 +60,6 @@ function mass_pwreset_execute_reset($user) {
  */
 function mass_pwreset_notify($user) {
   _user_mail_notify('password_reset', $user);
-  backdrop_set_message(t('Users notified via email.'), 'status');
+  backdrop_set_message(t('Users notified via email.'), 'status', FALSE);
 }
 
